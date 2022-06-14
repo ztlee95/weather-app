@@ -16,8 +16,6 @@ function App() {
   const [country, setCountry] = useState("")
   const [dataFetched, setDataFetched] = useState(false)
 
-  const [date, setDate] = useState(null)
-
   const API_KEY = process.env.REACT_APP_WEATHER_API_KEY
   
   const fetchData = async (e) => {
@@ -34,7 +32,7 @@ function App() {
       setHumidity(data.main.humidity)
       setWindSpeed(data.wind.speed)
       setCountry(data.sys.country)
-  
+
       setDataFetched(true)
     } catch (err) {
       console.log(err)
@@ -87,7 +85,6 @@ function App() {
             </div>
             <div className="weather__country">
               <h3>{country}</h3>
-              <h3>14/6/2022 8:00:00 PM</h3>
             </div>
           </div>
         </div>

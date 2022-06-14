@@ -70,7 +70,6 @@
 }
 
 .weather__icon {
-  font-size:3rem;
   margin-right:1rem;
 }
 
@@ -83,7 +82,7 @@
 .weather__humidity {
   flex-grow:1;
   margin-right: 70px;
-  border-right: 1px solid #fff;
+  border-right: 2px solid #fff;
 }
 
 .weather__country {
@@ -98,43 +97,3 @@
   font-size: 1.5rem;
   color: white;
 }
-
-
-
-/* .weather__location{
-  font-size:2.5rem;
-  color:white;
-}
-
-.weather__temp {
-  font-size:2.5rem;
-  color:white;
-}
-
-.weather__description {
-  display:flex;
-  align-items:center; 
-
-}
-.weather__description__head {
-  display:flex;
-  align-items:center; 
-  color:white;
-}
-
-.weather__icon {
-  font-size:2rem;
-  margin-right:0.4rem;
-}
-
-.weather__description * h3 {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  margin-bottom: 0.7rem;
-  color: white;
-}
-
-.weather__date {
-  font-size:1rem;
-  color:grey;
-} */

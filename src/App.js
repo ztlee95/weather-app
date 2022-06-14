@@ -1,53 +1,99 @@
 import logo from './logo.svg';
 import './App.css';
 import InputComponent from './components/InputComponent'
+import axios from 'axios'
+import { useState,useEffect } from 'react';
 
 function App() {
+  
+  const [temp, setTemp] = useState(null)
+  const [location, setLocation] = useState("")
+  const [inputLocation, setInputLocation] = useState("")
+  const [description, setDescription] = useState("")
+  const [icon, setIcon] = useState("")
+  const [humidity, setHumidity] = useState(null)
+  const [windSpeed, setWindSpeed] = useState(null)
+  const [country, setCountry] = useState("")
+  const [dataFetched, setDataFetched] = useState(false)
+
+  const [date, setDate] = useState(null)
+
+  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY
+  
+  const fetchData = async (e) => {
+    e.preventDefault()
+    
+    try {
+      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${inputLocation}&appid=${API_KEY}&units=metric`)
+      const data = await res.data
+  
+      setTemp(data.main.temp)
+      setLocation(data.name)
+      setDescription(data.weather[0].description)
+      setIcon(data.weather[0].icon)
+      setHumidity(data.main.humidity)
+      setWindSpeed(data.wind.speed)
+      setCountry(data.sys.country)
+  
+      setDataFetched(true)
+    } catch (err) {
+      console.log(err)
+      alert("Please enter a valid location")
+    }
+  }
+
+  const fetchDefaultData = async () => {
+    if(!dataFetched){
+      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Singapore&appid=${API_KEY}&units=metric`)
+      const data = await res.data
+
+      setTemp(data.main.temp)
+      setLocation(data.name)
+      setDescription(data.weather[0].description)
+      setIcon(data.weather[0].icon)
+      setHumidity(data.main.humidity)
+      setWindSpeed(data.wind.speed)
+      setCountry(data.sys.country)
+    }
+  }
+
+  useEffect(()=>{
+    fetchDefaultData()
+  },[])
+
   return (
     <div className="App">
       <div className="weather">
-        <InputComponent/>
+        <InputComponent
+          text={(e)=> setInputLocation(e.target.value)}
+          submit={fetchData}
+          click={fetchData}
+        />
         <div className="weather__description">
           <div className="weather__basics">
-            <h1>Weather in Tokyo</h1>
-            <h1>28&deg;C</h1>
+            <h1>Weather in {location}</h1>
+            <h1>{temp}&deg;C</h1>
           </div>
           <div className="weather__state">
-            <span className="weather__icon">🌤</span>
-            <h1>Partly<br/>cloudly</h1>
+            <span className="weather__icon">
+              <img src={`http://openweathermap.org/img/w/${icon}.png`} width="80" alt="weather icon" />
+            </span>
+            <h1>{description}</h1>
           </div>
           <div className="weather__params">
             <div className="weather__humidity">
-              <h3>Humidity: 84%</h3>
-              <h3>Wind speed: 5.66 m/s</h3>
+              <h3>Humidity: {humidity}%</h3>
+              <h3>Wind speed: {windSpeed} m/s</h3>
             </div>
             <div className="weather__country">
-              <h3>JP</h3>
+              <h3>{country}</h3>
               <h3>14/6/2022 8:00:00 PM</h3>
             </div>
           </div>
         </div>
-        {/* <h3 className="weather__location">Weather in Tokyo</h3>
-        <div className="weather__temp">
-          <h1>28&deg;C</h1>
-        </div>
-        <div className="weather__description">
-          <div>
-            <div className="weather__description__head">
-              <span className="weather__icon"></span>
-              <h1>Partly cloudly</h1>
-            </div>
-            <h3>Humidity: 84%</h3>
-            <h3>Wind speed: 5.66 m/s</h3>
-          </div>
-          <div>
-            <h3>JP</h3>
-            <h2 className="weather__date">14/Jun/2022, 8:00:00 PM</h2>
-          </div>
-        </div> */}
       </div>
     </div>
-  );
+  )
 }
 
 export default App;
